@@ -1,0 +1,138 @@
+/* 1. 全体の雰囲気：カフェのメニュー表風 */
+body {
+  background-color: #fdfaf1;
+  /* 優しい生成り色（紙の質感） */
+  background-image: radial-gradient(#e5e5f7 0.5px, transparent 0.5px);
+  /* 控えめなドット柄 */
+  background-size: 20px 20px;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+  /* 上品な明朝体 */
+  color: #4a3a2a;
+  /* 深いチョコレートブラウン */
+  padding: 50px 20px;
+  margin: 0;
+}
+
+/* 2. タイトル：看板メニュー風 */
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  color: #d35400;
+  margin-bottom: 50px;
+  border-bottom: 3px double #d35400;
+  /* 二重線の飾り */
+  display: inline-block;
+  left: 50%;
+  position: relative;
+  transform: translateX(-50%);
+  padding-bottom: 10px;
+}
+
+/* 3. コンテナ：テーブルの上風 */
+#posts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* 4. カード：本日のおすすめメニュー風 */
+.post-card {
+  background: #ffffff;
+  padding: 30px;
+  border: 1px solid #e0d0b0;
+  /* 薄いベージュの枠線 */
+  border-radius: 2px;
+  /* あえて角を丸めすぎず、紙っぽく */
+  box-shadow: 8px 8px 0px #e0d0b0;
+  /* 平面的でレトロな影 */
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* ホバー*/
+.post-card:hover {
+  transform: scale(1.03);
+  /* わずかに大きく */
+  box-shadow: 12px 12px 0px #d35400;
+  /* 影をオレンジに */
+  background-color: #fffdf9;
+}
+
+/* 5. タイトル（h2）：料理名風 */
+.post-card h2 {
+  font-size: 1.5rem;
+  color: #a04000;
+  margin-top: 0;
+  line-height: 1.4;
+  border-bottom: 1px dashed #e0d0b0;
+  /* 下に点線 */
+  padding-bottom: 10px;
+}
+
+/* 6. 本文（p）：料理の説明書き風*/
+.post-card p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #5d4037;
+  letter-spacing: 0.05em;
+}
+
+/*おすすめの印 */
+.post-card::before {
+  content: "オススメ✨";
+  position: absolute;
+  top: -15px;
+  left: -10px;
+  background: #e74c3c;
+  color: white;
+  font-size: 1.0rem;
+  padding: 5px 10px;
+  transform: rotate(-5deg);
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+/* --- レスポンシブ対応（スマホ用の設定） --- */
+
+/* 画面の横幅が 768px 以下の時（一般的なスマホ・タブレット） */
+@media (max-width: 768px) {
+
+  body {
+    padding: 20px 10px;
+    /* 余白を少し狭くして画面を有効活用 */
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    /* タイトルを少し小さく */
+    margin-bottom: 30px;
+  }
+
+  #posts-container {
+    grid-template-columns: 1fr;
+    /* 横に並べず、1列に並べる */
+    gap: 20px;
+    /* カード同士の間隔を少し狭く */
+  }
+
+  .post-card {
+    padding: 20px;
+    /* カードの中の余白を調整 */
+    box-shadow: 4px 4px 0px #e0d0b0;
+    /* 影を少し控えめに */
+  }
+
+  .post-card h2 {
+    font-size: 1.2rem;
+    /* スマホで見やすいサイズに */
+  }
+
+  .post-card::before {
+    font-size: 0.6rem;
+    /* オススメタグも少し小さく */
+    top: -10px;
+    left: 5px;
+  }
+}
