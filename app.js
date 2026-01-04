@@ -38,10 +38,10 @@ async function fetchPosts() {
       container.appendChild(card);
     });
   } catch (error) {
-    // 💡 強化ポイント：画面にもエラーメッセージを表示する 
+    // 画面にもエラーメッセージを表示する 
     console.error("データの取得に失敗しました:", error); 
     container.innerHTML = `
-      <div style="color: #e74c3c; text-align: center; padding: 20px;">
+      <div class="error-container">
         <h3>申し訳ありません</h3>
         <p>${error.message}</p>
         <button onclick="location.reload()">もう一度表示</button>

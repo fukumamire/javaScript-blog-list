@@ -94,6 +94,95 @@ h1 {
   font-weight: bold;
 }
 
+/* 「準備しています...」を表示する時のスタイル */
+#posts-container:has(> :first-child:last-child) {
+  /* まだカードがなくて、テキストだけの時のレイアウト */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+/* JSで container.textContent = "..." とした直後は、要素が「テキストノード」のみ */
+#posts-container {
+  /* 子要素がカードではなく、ただの文字だけの時に中央に寄せる設定 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 準備中テキストのデザイン */
+#posts-container {
+  text-align: center;
+  font-size: 3.5rem;
+  color: #a04000;
+  font-style: italic;
+}
+
+
+/* エラーメッセージ全体のコンテナ */
+.error-container {
+  background: #fff5f5;
+  border: 2px dashed #e74c3c;
+  padding: 40px;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: 50px auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 申し訳ありません（見出し） */
+.error-container h3 {
+  font-family: "Hiragino Mincho ProN", serif;
+  color: #c0392b;
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+  
+}
+
+/* エラー詳細テキスト */
+.error-container p {
+  color: #7f8c8d;
+  font-style: italic;
+  margin-bottom: 25px;
+  font-size: 1.6rem;
+}
+
+/* ★再表示ボタン */
+.error-container button {
+  background-color: #d35400;
+  /* 美味しそうなソースのようなオレンジ */
+  color: #ffffff;
+  border: none;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-family: "Hiragino Mincho ProN", serif;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 50px;
+  /* 丸みを持たせて柔らかい印象に */
+  box-shadow: 0 4px 0 #a04000;
+  /* ボタンに厚み（立体感）を出す */
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+/* ボタンにマウスを乗せたとき */
+.error-container button:hover {
+  background-color: #e67e22;
+  transform: translateY(2px);
+  /* 少し沈む動き */
+  box-shadow: 0 2px 0 #a04000;
+  /* 影を薄くして押し込んだ感を出す */
+}
+
+/* ボタンをクリックした瞬間 */
+.error-container button:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
 /* --- レスポンシブ対応（スマホ用の設定） --- */
 
 /* 画面の横幅が 768px 以下の時（一般的なスマホ・タブレット） */
