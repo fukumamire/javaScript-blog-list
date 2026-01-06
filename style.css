@@ -1,85 +1,68 @@
-/* 1. 全体の雰囲気：カフェのメニュー表風 */
+/* --- 1. 全体の土台 --- */
 body {
   background-color: #fdfaf1;
-  /* 優しい生成り色（紙の質感） */
   background-image: radial-gradient(#e5e5f7 0.5px, transparent 0.5px);
-  /* 控えめなドット柄 */
   background-size: 20px 20px;
   font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
-  /* 上品な明朝体 */
   color: #4a3a2a;
-  /* 深いチョコレートブラウン */
   padding: 50px 20px;
   margin: 0;
 }
 
-/* 2. タイトル：看板メニュー風 */
+/* --- 2. タイトル --- */
 h1 {
   text-align: center;
   font-size: 3rem;
   color: #d35400;
   margin-bottom: 50px;
   border-bottom: 3px double #d35400;
-  /* 二重線の飾り */
-  display: inline-block;
-  left: 50%;
-  position: relative;
-  transform: translateX(-50%);
+  display: block;
+  width: fit-content;
+  margin: 0 auto 50px auto;
+  /* 上下の余白を整理 */
   padding-bottom: 10px;
 }
 
-/* 3. コンテナ：テーブルの上風 */
+/* --- 3. コンテナ（横並びの鍵） --- */
 #posts-container {
-  display: grid;
+  display: grid !important;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 40px;
   max-width: 1100px;
   margin: 0 auto;
 }
 
-/* 4. カード：本日のおすすめメニュー風 */
+/* --- 4. 投稿カードのデザイン --- */
 .post-card {
   background: #ffffff;
   padding: 30px;
   border: 1px solid #e0d0b0;
-  /* 薄いベージュの枠線 */
-  border-radius: 2px;
-  /* あえて角を丸めすぎず、紙っぽく */
   box-shadow: 8px 8px 0px #e0d0b0;
-  /* 平面的でレトロな影 */
   position: relative;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-/* ホバー*/
 .post-card:hover {
   transform: scale(1.03);
-  /* わずかに大きく */
   box-shadow: 12px 12px 0px #d35400;
-  /* 影をオレンジに */
-  background-color: #fffdf9;
 }
 
-/* 5. タイトル（h2）：料理名風 */
 .post-card h2 {
   font-size: 1.5rem;
   color: #a04000;
   margin-top: 0;
-  line-height: 1.4;
   border-bottom: 1px dashed #e0d0b0;
-  /* 下に点線 */
   padding-bottom: 10px;
 }
 
-/* 6. 本文（p）：料理の説明書き風*/
 .post-card p {
   font-size: 1rem;
   line-height: 1.8;
   color: #5d4037;
-  letter-spacing: 0.05em;
 }
 
-/*おすすめの印 */
 .post-card::before {
   content: "オススメ✨";
   position: absolute;
@@ -87,141 +70,110 @@ h1 {
   left: -10px;
   background: #e74c3c;
   color: white;
-  font-size: 1.0rem;
   padding: 5px 10px;
   transform: rotate(-5deg);
-  font-family: sans-serif;
   font-weight: bold;
+  font-family: sans-serif;
 }
 
-/* 「準備しています...」を表示する時のスタイル */
-#posts-container:has(> :first-child:last-child) {
-  /* まだカードがなくて、テキストだけの時のレイアウト */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-}
-
-/* JSで container.textContent = "..." とした直後は、要素が「テキストノード」のみ */
-#posts-container {
-  /* 子要素がカードではなく、ただの文字だけの時に中央に寄せる設定 */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-/* 準備中テキストのデザイン */
-#posts-container {
+/* --- 5. 状態表示（準備中・エラー）の中央寄せ --- */
+.status-msg,
+.error-container {
+  grid-column: 1 / -1;
+  /* 全列をぶち抜く [cite: 5-3-2] */
+  justify-self: center;
+  /* 横方向中央 [cite: 4-1-7] */
   text-align: center;
-  font-size: 3.5rem;
+}
+
+/* 準備中・Emptyテキスト */
+.status-msg {
+  font-size: 2.5rem;
   color: #a04000;
   font-style: italic;
+  margin-top: 50px;
+  animation: cooking 1.5s infinite ease-in-out;
 }
 
-
-/* エラーメッセージ全体のコンテナ */
+/* エラーコンテナ */
 .error-container {
   background: #fff5f5;
   border: 2px dashed #e74c3c;
   padding: 40px;
-  border-radius: 10px;
   max-width: 500px;
   margin: 50px auto;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
-/* 申し訳ありません（見出し） */
 .error-container h3 {
-  font-family: "Hiragino Mincho ProN", serif;
   color: #c0392b;
-  margin-bottom: 10px;
   font-size: 1.8rem;
-  
+  margin-bottom: 10px;
 }
 
-/* エラー詳細テキスト */
 .error-container p {
   color: #7f8c8d;
   font-style: italic;
   margin-bottom: 25px;
-  font-size: 1.6rem;
+  font-size: 1.1rem;
+  /* 少し読みやすく調整 */
 }
 
-/* ★再表示ボタン */
+/* 再表示ボタン */
 .error-container button {
   background-color: #d35400;
-  /* 美味しそうなソースのようなオレンジ */
   color: #ffffff;
   border: none;
   padding: 12px 30px;
   font-size: 1.1rem;
-  font-family: "Hiragino Mincho ProN", serif;
   font-weight: bold;
   cursor: pointer;
   border-radius: 50px;
-  /* 丸みを持たせて柔らかい印象に */
   box-shadow: 0 4px 0 #a04000;
-  /* ボタンに厚み（立体感）を出す */
   transition: all 0.2s ease;
-  display: inline-block;
 }
 
-/* ボタンにマウスを乗せたとき */
 .error-container button:hover {
   background-color: #e67e22;
   transform: translateY(2px);
-  /* 少し沈む動き */
   box-shadow: 0 2px 0 #a04000;
-  /* 影を薄くして押し込んだ感を出す */
 }
 
-/* ボタンをクリックした瞬間 */
-.error-container button:active {
-  transform: translateY(4px);
-  box-shadow: none;
-}
+/* --- 6. アニメーション --- */
+@keyframes cooking {
 
-/* --- レスポンシブ対応（スマホ用の設定） --- */
-
-/* 画面の横幅が 768px 以下の時（一般的なスマホ・タブレット） */
-@media (max-width: 768px) {
-
-  body {
-    padding: 20px 10px;
-    /* 余白を少し狭くして画面を有効活用 */
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translateY(0);
   }
 
+  50% {
+    opacity: 1;
+    transform: translateY(-5px);
+  }
+}
+
+/* --- 7. スマホ・タブレット用 (レスポンシブ) --- */
+@media (max-width: 768px) {
   h1 {
-    font-size: 1.8rem;
-    /* タイトルを少し小さく */
-    margin-bottom: 30px;
+    font-size: 2rem;
+    /* タイトルを小さく */
   }
 
   #posts-container {
     grid-template-columns: 1fr;
-    /* 横に並べず、1列に並べる */
+    /* 1列にする */
     gap: 20px;
-    /* カード同士の間隔を少し狭く */
   }
 
-  .post-card {
+  .status-msg {
+    font-size: 1.5rem;
+    /* 文字をスマホサイズに */
+  }
+
+  .error-container {
     padding: 20px;
-    /* カードの中の余白を調整 */
-    box-shadow: 4px 4px 0px #e0d0b0;
-    /* 影を少し控えめに */
-  }
-
-  .post-card h2 {
-    font-size: 1.2rem;
-    /* スマホで見やすいサイズに */
-  }
-
-  .post-card::before {
-    font-size: 0.6rem;
-    /* オススメタグも少し小さく */
-    top: -10px;
-    left: 5px;
+    width: 90%;
   }
 }

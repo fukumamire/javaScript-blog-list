@@ -11,6 +11,15 @@
   <h1>Blog Posts</h1>
   <div id="posts-container"></div>
 
+  <div id="loading" class="status-msg">準備しています... 👨‍🍳🍳</div>
+  <div id="error" class="error-container" style="display: none;">
+    <h3>申し訳ありません</h3>
+    <p id="error-message">エラーが発生しました。時間をおいて再読み込みしてください。</p>
+    <button onclick="location.reload()">もう一度表示</button>
+  </div>
+
+  <div id="empty" class="status-msg" style="display: none;">投稿がありません。</div>
+  
   <script src="app.js"></script>
 </body>
 

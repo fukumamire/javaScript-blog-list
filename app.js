@@ -1,53 +1,64 @@
-async function fetchPosts() {
-  const container = document.querySelector("#posts-container");
+// 各UI要素のリモコン（取得）
+const container = document.querySelector("#posts-container");
+const loading = document.querySelector("#loading");
+const errorArea = document.querySelector("#error");
+const errorMsg = document.querySelector("#error-message");
+const empty = document.querySelector("#empty");
 
-  // 通信前に「準備中...」と表示しておくと親切です
-  container.textContent = "準備しています...";
+// 表示・非表示を切り替えるヘルパー関数
+function show(el) {
+  el.style.display = "block";
+}
+function hide(el) {
+  el.style.display = "none";
+}
+
+async function fetchPosts() {
+  // --- 1. ローディング状態（準備開始！） ---
+  show(loading);
+  hide(container);
+  hide(errorArea);
+  hide(empty);
 
   try {
-    // 意図的に無効なURLを指定してエラーを発生させる
-    const response = await fetch(
-      "https://jsonplaceholder.typicode.com/invalid-url"
-    );
+    // 意図的にエラーを起こす場合は URL を "/invalid-url" にします
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
 
-    // 💡 強化ポイント：HTTPエラー（404など）を具体的にキャッチする
     if (!response.ok) {
-      // response.status（404や500など）を含めたエラーを投げる
-      throw new Error(
-        `データの取得に失敗しました (HTTPエラー: ${response.status})`
-      );
+      throw new Error(`データの取得に失敗しました (HTTP: ${response.status})`);
     }
 
     const posts = await response.json();
 
-    // 画面を一度空にしてからデータを表示する
-    container.textContent = "";
+    // --- 2. 成功時の処理（幕を下ろす） ---
+    hide(loading);
 
-    posts.forEach((post) => {
-      const card = document.createElement("div");
-      card.classList.add("post-card");
+    if (posts.length === 0) {
+      // 投稿が0件だった場合
+      show(empty);
+    } else {
+      // 投稿が1件以上ある場合
+      show(container);
+      container.innerHTML = ""; // 一旦空にする
 
-      const title = document.createElement("h2");
-      title.textContent = post.title;
-
-      const body = document.createElement("p");
-      body.textContent = post.body;
-
-      card.appendChild(title);
-      card.appendChild(body);
-      container.appendChild(card);
-    });
+      posts.forEach((post) => {
+        const card = document.createElement("div");
+        card.classList.add("post-card");
+        card.innerHTML = `
+          <h2>${post.title}</h2>
+          <p>${post.body}</p>
+        `;
+        container.appendChild(card);
+      });
+    }
   } catch (error) {
-    // 画面にもエラーメッセージを表示する 
-    console.error("データの取得に失敗しました:", error); 
-    container.innerHTML = `
-      <div class="error-container">
-        <h3>申し訳ありません</h3>
-        <p>${error.message}</p>
-        <button onclick="location.reload()">もう一度表示</button>
-      </div>
-    `;
+    // --- 3. エラー状態（救急対応！） ---
+    hide(loading);
+    show(errorArea);
+    errorMsg.textContent = error.message; // エラー内容を書き換える
+    console.error("Fetch error:", error);
   }
 }
 
+// 実行！
 fetchPosts();
